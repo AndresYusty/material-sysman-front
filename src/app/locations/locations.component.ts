@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-locations',
   standalone: true,
-  imports: [],
+  selector: 'app-locations',
   templateUrl: './locations.component.html',
-  styleUrl: './locations.component.scss'
+  styleUrls: ['./locations.component.scss'],
 })
-export class LocationsComponent {
-
-}
+export class LocationsComponent {}
