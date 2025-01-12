@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  button {
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+  

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { MaterialService } from './material.service';
+import { MaterialService } from '../services/material.service';
 
 @Component({
   standalone: true,
