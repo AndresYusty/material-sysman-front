@@ -1,16 +1,109 @@
 <div class="materials-container">
-  <h1>Materiales</h1>
+  <!-- Header con el título y botón de cerrar sesión -->
+  <header class="header">
+    <h1>Materiales</h1>
+    <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+  </header>
+
+  <!-- Sección de filtros -->
+  <section class="filters">
+    <h2>Filtros</h2>
+    <div class="filter-group">
+      <label for="type">Tipo:</label>
+      <input id="type" type="text" [(ngModel)]="filterType" placeholder="Filtrar por tipo" />
+    </div>
+    <div class="filter-group">
+      <label for="date">Fecha de Compra:</label>
+      <input id="date" type="date" [(ngModel)]="filterDate" />
+    </div>
+    <div class="filter-group">
+      <label for="city">Ciudad:</label>
+      <input id="city" type="text" [(ngModel)]="filterCity" placeholder="Filtrar por ciudad" />
+    </div>
+    <button class="apply-btn" (click)="applyFilters()">Aplicar Filtros</button>
+  </section>
+
+  <!-- Mensaje de error -->
   <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
 
-  <ul *ngIf="materials.length > 0; else noMaterials">
-    <li *ngFor="let material of materials">
-      <strong>{{ material.nombre }}</strong> - {{ material.descripcion }}
-    </li>
-  </ul>
+  <!-- Lista de materiales -->
+  <section class="materials-list">
+    <h2>Lista de Materiales</h2>
+    <button class="create-btn" (click)="openCreateModal()">Crear Material</button>
+    <ul *ngIf="materials.length > 0; else noMaterials">
+      <li *ngFor="let material of materials">
+        <strong>{{ material.nombre }}</strong> - {{ material.descripcion }}
+        <button class="edit-btn" (click)="openUpdateModal(material)">Editar</button>
+      </li>
+    </ul>
+  </section>
 
+  <!-- Mensaje para cuando no hay materiales -->
   <ng-template #noMaterials>
-    <p>No hay materiales disponibles.</p>
+    <p class="no-materials">No hay materiales disponibles.</p>
   </ng-template>
+
+  <!-- Modal para Crear Material -->
+  <div *ngIf="showCreateModal" class="modal-overlay">
+    <div class="modal">
+      <h2>Crear Material</h2>
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="newMaterial.nombre" />
+      </div>
+      <div class="form-group">
+        <label>Tipo:</label>
+        <input type="text" [(ngModel)]="newMaterial.tipo" />
+      </div>
+      <div class="form-group">
+        <label>Ciudad:</label>
+        <input type="text" [(ngModel)]="newMaterial.ciudad" />
+      </div>
+      <div class="form-group">
+        <label>Fecha de Compra:</label>
+        <input type="date" [(ngModel)]="newMaterial.fechaCompra" />
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="newMaterial.descripcion"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="create-btn" (click)="createMaterial()">Crear</button>
+        <button class="cancel-btn" (click)="closeCreateModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Editar Material -->
+  <div *ngIf="showUpdateModal" class="modal-overlay">
+    <div class="modal">
+      <h2>Editar Material</h2>
+      <div class="form-group">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="selectedMaterial.nombre" />
+      </div>
+      <div class="form-group">
+        <label>Tipo:</label>
+        <input type="text" [(ngModel)]="selectedMaterial.tipo" />
+      </div>
+      <div class="form-group">
+        <label>Ciudad:</label>
+        <input type="text" [(ngModel)]="selectedMaterial.ciudad" />
+      </div>
+      <div class="form-group">
+        <label>Fecha de Compra:</label>
+        <input type="date" [(ngModel)]="selectedMaterial.fechaCompra" />
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="selectedMaterial.descripcion"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="edit-btn" (click)="updateMaterial()">Actualizar</button>
+        <button class="cancel-btn" (click)="closeUpdateModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
