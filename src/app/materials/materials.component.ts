@@ -25,6 +25,8 @@ export class MaterialsComponent implements OnInit {
   newMaterial: any = { name: '', type: '', city: '', purchaseDate: '', description: '' };
   selectedMaterial: any = null;
 
+  estados = ['ACTIVO', 'DISPONIBLE', 'ASIGNADO']; // Valores del enum
+
   constructor(private materialService: MaterialService) {}
 
   ngOnInit() {
@@ -44,19 +46,22 @@ export class MaterialsComponent implements OnInit {
     });
   }
 
-  // Aplicar filtros a los materiales
+  // Aplicar filtros
   applyFilters() {
     this.filteredMaterials = this.materials.filter((material) => {
-      const matchesType =
-        this.filterType === '' ||
-        material.tipo?.toLowerCase().includes(this.filterType.toLowerCase());
-      const matchesDate =
-        this.filterDate === '' || material.purchaseDate === this.filterDate;
-      const matchesCity =
-        this.filterCity === '' ||
-        material.city?.toLowerCase().includes(this.filterCity.toLowerCase());
+      const matchesType = this.filterType === '' || material.tipo?.toLowerCase().includes(this.filterType.toLowerCase());
+      const matchesDate = this.filterDate === '' || material.fechaCompra === this.filterDate;
+      const matchesCity = this.filterCity === '' || material.nombreCiudad?.toLowerCase().includes(this.filterCity.toLowerCase());
       return matchesType && matchesDate && matchesCity;
     });
+  }
+
+  // Limpiar filtros
+  clearFilters() {
+    this.filterType = '';
+    this.filterDate = '';
+    this.filterCity = '';
+    this.filteredMaterials = [...this.materials]; // Reinicia la lista de materiales filtrados
   }
 
   // Crear un nuevo material
@@ -113,23 +118,22 @@ export class MaterialsComponent implements OnInit {
   }
 
   showCreateModal: boolean = false;
-showUpdateModal: boolean = false;
+  showUpdateModal: boolean = false;
 
-openCreateModal() {
-  this.showCreateModal = true;
-}
+  openCreateModal() {
+    this.showCreateModal = true;
+  }
 
-closeCreateModal() {
-  this.showCreateModal = false;
-}
+  closeCreateModal() {
+    this.showCreateModal = false;
+  }
 
-openUpdateModal(material: any) {
-  this.selectedMaterial = { ...material };
-  this.showUpdateModal = true;
-}
+  openUpdateModal(material: any) {
+    this.selectedMaterial = { ...material };
+    this.showUpdateModal = true;
+  }
 
-closeUpdateModal() {
-  this.showUpdateModal = false;
-}
-
+  closeUpdateModal() {
+    this.showUpdateModal = false;
+  }
 }

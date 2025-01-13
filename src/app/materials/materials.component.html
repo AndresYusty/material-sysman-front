@@ -2,7 +2,7 @@
   <!-- Header con el título y botón de cerrar sesión -->
   <header class="header">
     <h1>Materiales</h1>
-    <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+    <button class="btn btn-danger" (click)="logout()">Cerrar Sesión</button>
   </header>
 
   <!-- Sección de filtros -->
@@ -20,7 +20,8 @@
       <label for="city">Ciudad:</label>
       <input id="city" type="text" [(ngModel)]="filterCity" placeholder="Filtrar por ciudad" />
     </div>
-    <button class="apply-btn" (click)="applyFilters()">Aplicar Filtros</button>
+    <button class="btn btn-primary" (click)="applyFilters()">Aplicar Filtros</button>
+    <button class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
   </section>
 
   <!-- Mensaje de error -->
@@ -31,11 +32,19 @@
   <!-- Lista de materiales -->
   <section class="materials-list">
     <h2>Lista de Materiales</h2>
-    <button class="create-btn" (click)="openCreateModal()">Crear Material</button>
-    <ul *ngIf="materials.length > 0; else noMaterials">
-      <li *ngFor="let material of materials">
-        <strong>{{ material.nombre }}</strong> - {{ material.descripcion }}
-        <button class="edit-btn" (click)="openUpdateModal(material)">Editar</button>
+    <button class="btn btn-success" (click)="openCreateModal()">Crear Material</button>
+    <ul *ngIf="filteredMaterials.length > 0; else noMaterials">
+      <li *ngFor="let material of filteredMaterials" class="material-item">
+        <div class="material-details">
+          <p><strong>Nombre:</strong> {{ material.nombre }}</p>
+          <p><strong>Tipo:</strong> {{ material.tipo }}</p>
+          <p><strong>Ciudad:</strong> {{ material.nombreCiudad }}</p>
+          <p><strong>Fecha de Compra:</strong> {{ material.fechaCompra | date }}</p>
+          <p><strong>Descripción:</strong> {{ material.descripcion }}</p>
+        </div>
+        <div class="material-actions">
+          <button class="btn btn-warning" (click)="openUpdateModal(material)">Editar</button>
+        </div>
       </li>
     </ul>
   </section>
@@ -59,19 +68,38 @@
       </div>
       <div class="form-group">
         <label>Ciudad:</label>
-        <input type="text" [(ngModel)]="newMaterial.ciudad" />
+        <input type="text" [(ngModel)]="newMaterial.nombreCiudad" />
       </div>
       <div class="form-group">
         <label>Fecha de Compra:</label>
         <input type="date" [(ngModel)]="newMaterial.fechaCompra" />
       </div>
       <div class="form-group">
+        <label for="precio">Precio:</label>
+        <input
+          id="precio"
+          type="number"
+          step="0.01"
+          [(ngModel)]="newMaterial.precio"
+          required
+          placeholder="Ingrese el precio del material"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="estado">Estado:</label>
+        <select id="estado" [(ngModel)]="newMaterial.estado" required>
+          <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>Descripción:</label>
         <textarea [(ngModel)]="newMaterial.descripcion"></textarea>
       </div>
       <div class="modal-actions">
-        <button class="create-btn" (click)="createMaterial()">Crear</button>
-        <button class="cancel-btn" (click)="closeCreateModal()">Cancelar</button>
+        <button class="btn btn-success" (click)="createMaterial()">Crear</button>
+        <button class="btn btn-secondary" (click)="closeCreateModal()">Cancelar</button>
       </div>
     </div>
   </div>
@@ -90,19 +118,38 @@
       </div>
       <div class="form-group">
         <label>Ciudad:</label>
-        <input type="text" [(ngModel)]="selectedMaterial.ciudad" />
+        <input type="text" [(ngModel)]="selectedMaterial.nombreCiudad" />
       </div>
       <div class="form-group">
         <label>Fecha de Compra:</label>
         <input type="date" [(ngModel)]="selectedMaterial.fechaCompra" />
       </div>
       <div class="form-group">
+        <label for="editPrecio">Precio:</label>
+        <input
+          id="editPrecio"
+          type="number"
+          step="0.01"
+          [(ngModel)]="selectedMaterial.precio"
+          required
+          placeholder="Ingrese el precio del material"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="estado">Estado:</label>
+        <select id="estado" [(ngModel)]="selectedMaterial.estado" required>
+          <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label>Descripción:</label>
         <textarea [(ngModel)]="selectedMaterial.descripcion"></textarea>
       </div>
       <div class="modal-actions">
-        <button class="edit-btn" (click)="updateMaterial()">Actualizar</button>
-        <button class="cancel-btn" (click)="closeUpdateModal()">Cancelar</button>
+        <button class="btn btn-warning" (click)="updateMaterial()">Actualizar</button>
+        <button class="btn btn-secondary" (click)="closeUpdateModal()">Cancelar</button>
       </div>
     </div>
   </div>

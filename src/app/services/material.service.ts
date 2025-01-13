@@ -36,6 +36,20 @@ export class MaterialService {
         params: { city },
       });
     }
+
+    getMaterialsByFilters(filters: { tipo?: string; fechaCompra?: string; nombreCiudad?: string }): Observable<any> {
+      let params: any = {};
+      if (filters.tipo) params.tipo = filters.tipo;
+      if (filters.fechaCompra) params.fechaCompra = filters.fechaCompra;
+      if (filters.nombreCiudad) params.nombreCiudad = filters.nombreCiudad;
+    
+      return this.http.get(`${this.baseUrl}/filtrar`, {
+        headers: this.getHeaders(),
+        params,
+      });
+    }
+    
+    
   
     // Crear un nuevo material
     createMaterial(material: any): Observable<any> {
